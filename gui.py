@@ -55,7 +55,6 @@ def hide():
 hidebutton = tk.Button(root, text="Hide", command=hide)
 hidebutton.place(x=10, y=500)
 
-
 db_frame.place(x=150, y=52)
 
 root.mainloop()
