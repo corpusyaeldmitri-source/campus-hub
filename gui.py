@@ -1,8 +1,7 @@
 import tkinter as tk
 from tkinter import ttk
 import json
-
-with open()
+import storage
 
 root = tk.Tk()
 
@@ -94,6 +93,8 @@ def save_task():
         }
 
         tasks_list.append(task)
+        storage.storage_save(tasks_list)
+
         tsk_addsuccess_label.place(x=400, y=500)
 
         print(tasks_list)

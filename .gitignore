@@ -13,3 +13,6 @@ Icon?
 
 # VS Code
 .vscode/
+
+#JSON
+tasks.json
