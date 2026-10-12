@@ -60,6 +60,13 @@ def show_add_task():
     clear_button_task.place(x=605, y=500)
 
 
+def clear_entries():
+    name_entry_add.delete(0, tk.END)
+    sub_entry_add.delete(0, tk.END)
+    date_entry_add.delete(0, tk.END)
+    det_entry_add.delete("1.0", "end")
+    tsk_addsuccess_label.place_forget()
+
 def save_task():
     task_name = name_entry_add.get()
     task_subject = sub_entry_add.get()
@@ -74,6 +81,11 @@ def save_task():
     }
 
     tasks_list.append(task)
+    tsk_addsuccess_label.place(x=400, y=500)
+
+    print(tasks_list)
+    tsk_frame.after(1000, clear_entries)
+
 
 
 def show_remove_task():
@@ -204,30 +216,37 @@ tsk_name_add = tk.Label(
     text="Task name:",
     font=("Helvetica", "16"),
     fg="black",
-    background="white",
+    bg="white",
 )
 tsk_sub_add = tk.Label(
     tsk_frame,
     text="Task subject:",
     font=("Helvetica", "16"),
     fg="black",
-    background="white",
+    bg="white",
 )
 tsk_due_add = tk.Label(
     tsk_frame,
     text="Due date:",
     font=("Helvetica", "16"),
     fg="black",
-    background="white",
+    bg="white",
 )
 tsk_det_add = tk.Label(
     tsk_frame,
     text="Task details:",
     font=("Helvetica", "16"),
     fg="black",
-    background="white",
+    bg="white",
 )
 
+tsk_addsuccess_label = tk.Label(
+    tsk_frame,
+    text="Task added successfully.",
+    font=("Helvetica", "16"),
+    fg="green",
+    bg="white",
+)
 
 name_entry_add = tk.Entry(tsk_frame, width=75, bg="white", borderwidth=1, fg="black")
 sub_entry_add = tk.Entry(tsk_frame, width=75, bg="white", borderwidth=1, fg="black")
