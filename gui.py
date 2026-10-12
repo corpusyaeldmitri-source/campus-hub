@@ -1,5 +1,8 @@
 import tkinter as tk
 from tkinter import ttk
+import json
+
+with open()
 
 root = tk.Tk()
 
@@ -60,32 +63,41 @@ def show_add_task():
     clear_button_task.place(x=605, y=500)
 
 
-def clear_entries():
+def clear_entry_task():
     name_entry_add.delete(0, tk.END)
     sub_entry_add.delete(0, tk.END)
     date_entry_add.delete(0, tk.END)
     det_entry_add.delete("1.0", "end")
     tsk_addsuccess_label.place_forget()
 
+
 def save_task():
-    task_name = name_entry_add.get()
-    task_subject = sub_entry_add.get()
-    task_due = date_entry_add.get()
+    task_name = name_entry_add.get().strip()
+    task_subject = sub_entry_add.get().strip()
+    task_due = date_entry_add.get().strip()
     task_details = det_entry_add.get("1.0", "end").strip()
 
-    task = {
-        "Name": task_name,
-        "Subject": task_subject,
-        "Due": task_due,
-        "Details": task_details,
-    }
+    if (
+        task_name.strip() == ""
+        or task_subject.strip() == ""
+        or task_due.strip() == ""
+        or task_details.strip() == ""
+    ):
+        tsk_invalid_label.place(x=400, y=500)
+        tsk_frame.after(1000, tsk_invalid_label.place_forget)
+    else:
+        task = {
+            "Name": task_name,
+            "Subject": task_subject,
+            "Due": task_due,
+            "Details": task_details,
+        }
 
-    tasks_list.append(task)
-    tsk_addsuccess_label.place(x=400, y=500)
+        tasks_list.append(task)
+        tsk_addsuccess_label.place(x=400, y=500)
 
-    print(tasks_list)
-    tsk_frame.after(1000, clear_entries)
-
+        print(tasks_list)
+        tsk_frame.after(1000, clear_entry_task)
 
 
 def show_remove_task():
@@ -208,6 +220,7 @@ clear_button_task = tk.Button(
     height=1,
     width=7,
     borderwidth=0,
+    command=clear_entry_task,
 )
 
 
@@ -245,6 +258,14 @@ tsk_addsuccess_label = tk.Label(
     text="Task added successfully.",
     font=("Helvetica", "16"),
     fg="green",
+    bg="white",
+)
+
+tsk_invalid_label = tk.Label(
+    tsk_frame,
+    text="Please fill in all fields!",
+    font=("Helvetica", "18"),
+    fg="red",
     bg="white",
 )
 
