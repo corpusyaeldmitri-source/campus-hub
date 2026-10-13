@@ -13,12 +13,13 @@ root.resizable(False, False)
 tasks_list = []
 
 
-# FUNCTIONS
+# FUNCTIONS ----------------------------------------------------------------------------------------------------------------
 def dashboard():
     hide()
     root.after(50)
     db_frame.place(x=140, y=52)
-    db_todo.place(x=10, y=10)
+    db_taskstodo.place(x=130, y=10)
+    root.after(1, show_db)
 
 
 def tasks():
@@ -42,7 +43,7 @@ def assignments():
     ass_frame.place(x=140, y=52)
 
 
-# TASK BUTTONS
+# TASK BUTTONS ----------------------------------------------------------------------------------------------------------------
 
 
 def show_add_task():
@@ -97,7 +98,6 @@ def save_task():
 
         tsk_addsuccess_label.place(x=400, y=500)
 
-        print(tasks_list)
         tsk_frame.after(1000, clear_entry_task)
 
 
@@ -117,7 +117,7 @@ ch_header = tk.Label(
 )
 ch_header.place(relx=0.5, y=27, anchor="center")
 
-# SIDE BUTTONS
+# SIDE BUTTONS ----------------------------------------------------------------------------------------------------------------
 dashboard_btn = tk.Button(
     root,
     text="Dashboard",
@@ -162,18 +162,51 @@ assignments_btn = tk.Button(
 )
 assignments_btn.place(x=10, y=215)
 
-# FRAMES
+# MAIN FRAMES ----------------------------------------------------------------------------------------------------------------
 db_frame = tk.Frame(root, bg="white", height="575", width="835", relief="sunken", bd=7)
 tsk_frame = tk.Frame(root, bg="white", height="575", width="835", relief="sunken", bd=7)
 prj_frame = tk.Frame(root, bg="white", height="575", width="835", relief="sunken", bd=7)
 ass_frame = tk.Frame(root, bg="white", height="575", width="835", relief="sunken", bd=7)
 
-# DASHBOARD
-db_todo = tk.Label(
-    db_frame, text="To do:", font=("Helvetica", "16"), fg="black", background="white"
+# DASHBOARD ----------------------------------------------------------------------------------------------------------------
+db_taskstodo = tk.Label(
+    db_frame,
+    text="Tasks",
+    font=("Helvetica", "16"),
+    fg="black",
+    background="white",
 )
+db_notasks = tk.Label(
+    db_frame,
+    text="No tasks yet",
+    font=("Helvetica", "16"),
+    fg="black",
+    background="white",
+)
+tasks_list = storage.storage_load()
 
-# TASKS
+
+def show_db():
+    placex = 20
+    placey = 50
+    for task in tasks_list:
+        t_frame = tk.Frame(
+            db_frame, bg="light grey", height="100", width="300", relief="groove", bd=7
+        )
+        t_labels = tk.Label(
+            t_frame,
+            text=f"Name: {task["Name"]}\nSubject: {task["Subject"]}\nDue date: {task["Due"]}",
+            font=("Helvetica", "18"),
+            fg="black",
+            bg="light grey",
+            justify="left",
+        )
+        t_frame.place(x=placex, y=placey)
+        t_labels.place(x=10, y=5)
+        placey += 110
+
+
+# TASKS ----------------------------------------------------------------------------------------------------------------
 tsk_add_btn = tk.Button(
     tsk_frame,
     text="Add task",
@@ -276,6 +309,7 @@ date_entry_add = tk.Entry(tsk_frame, width=75, bg="white", borderwidth=1, fg="bl
 det_entry_add = tk.Text(tsk_frame, width=96, bg="white", borderwidth=1, fg="black")
 
 
+# HIDE ----------------------------------------------------------------------------------------------------------------
 def hide_task():
     name_entry_add.place_forget()
     sub_entry_add.place_forget()
@@ -302,5 +336,11 @@ hidebutton = tk.Button(root, text="Hide", command=hide)
 hidebutton.place(x=10, y=500)
 
 dashboard()
+show_db()
+
+if tasks_list == []:
+    db_notasks.place(x=100, y=50)
+else:
+    db_notasks.place_forget()
 
 root.mainloop()
