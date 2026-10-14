@@ -1,6 +1,4 @@
 import tkinter as tk
-from tkinter import ttk
-import json
 import storage
 
 root = tk.Tk()
