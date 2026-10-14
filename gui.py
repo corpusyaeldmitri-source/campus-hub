@@ -43,6 +43,15 @@ def assignments():
     root.after(50)
     ass_frame.place(x=140, y=52)
 
+def mark_finished(task_no):
+    tasks_list[task_no]["Finished"] = True
+    storage.storage_save(tasks_list)
+    root.after(1, show_db)
+
+def mark_unfinished(task_no):
+    tasks_list[task_no]["Finished"] = False
+    storage.storage_save(tasks_list)
+    root.after(1, show_db)
 
 # TASK BUTTONS ----------------------------------------------------------------------------------------------------------------
 
@@ -87,13 +96,12 @@ def save_task():
         tsk_invalid_label.place(x=400, y=500)
         tsk_frame.after(1000, tsk_invalid_label.place_forget)
     else:
-        task_complete = False
         task = {
             "Name": task_name,
             "Subject": task_subject,
             "Due": task_due,
             "Details": task_details,
-            "Finished": task_complete
+            "Finished": False
         }
 
         tasks_list.append(task)
@@ -199,12 +207,12 @@ tasks_list = storage.storage_load()
 
 def show_db():
     placey = 50
-    for task in tasks_list:
+    for task_no, task in enumerate(tasks_list):
         t_frame = tk.Frame(
             db_frame, bg="light grey", height="115", width="300", relief="groove", bd=7
         )
         tdets_frame = tk.Frame(
-            db_frame, bg="light grey", height="115", width="480", relief="groove", bd=7
+            db_frame, bg="light grey", height="115", width="440", relief="groove", bd=7
         )
         task_status = "Complete" if task["Finished"] else "Not Complete"
         t_label = tk.Label(
@@ -223,14 +231,39 @@ def show_db():
             bg="light grey",
             justify="left",
         )
+        tsk_done_btn = tk.Button(
+            db_frame,
+            text="✓",
+            font=("Helvetica", "16"),
+            height=2,
+            width=1,
+            bg="green",
+            fg="black",
+            borderwidth=0,
+            command=lambda task_no = task_no: mark_finished(task_no),
+        )
+        tsk_undone_btn = tk.Button(
+            db_frame,
+            text="X",
+            font=("Helvetica", "16"),
+            height=2,
+            width=1,
+            bg="green",
+            fg="black",
+            borderwidth=0,
+            command=lambda task_no = task_no: mark_unfinished(task_no),
+        )
+
         t_frame.place(x=20, y=placey)
         tdets_frame.place(x=330, y=placey)
         t_label.place(x=10, y=5)
         tdets_label.place(x=10, y=2)
+        tsk_done_btn.place(x=775, y=placey)
+        tsk_undone_btn.place(x=775, y=placey+50)
         placey += 120
 
 
-# TASKS ----------------------------------------------------------------------------------------------------------------
+# ADD TASKS ----------------------------------------------------------------------------------------------------------------
 tsk_add_btn = tk.Button(
     tsk_frame,
     text="Add task",
@@ -331,6 +364,8 @@ name_entry_add = tk.Entry(tsk_frame, width=75, bg="white", borderwidth=1, fg="bl
 sub_entry_add = tk.Entry(tsk_frame, width=75, bg="white", borderwidth=1, fg="black")
 date_entry_add = tk.Entry(tsk_frame, width=75, bg="white", borderwidth=1, fg="black")
 det_entry_add = tk.Text(tsk_frame, width=96, bg="white", borderwidth=1, fg="black")
+
+# MARK TASKS ----------------------------------------------------------------------------------------------------------------
 
 
 # HIDE ----------------------------------------------------------------------------------------------------------------
