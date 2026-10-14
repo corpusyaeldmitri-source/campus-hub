@@ -41,15 +41,18 @@ def assignments():
     root.after(50)
     ass_frame.place(x=140, y=52)
 
+
 def mark_finished(task_no):
     tasks_list[task_no]["Finished"] = True
     storage.storage_save(tasks_list)
     root.after(1, show_db)
 
+
 def mark_unfinished(task_no):
     tasks_list[task_no]["Finished"] = False
     storage.storage_save(tasks_list)
     root.after(1, show_db)
+
 
 # TASK BUTTONS ----------------------------------------------------------------------------------------------------------------
 
@@ -99,7 +102,7 @@ def save_task():
             "Subject": task_subject,
             "Due": task_due,
             "Details": task_details,
-            "Finished": False
+            "Finished": False,
         }
 
         tasks_list.append(task)
@@ -238,7 +241,7 @@ def show_db():
             bg="green",
             fg="black",
             borderwidth=0,
-            command=lambda task_no = task_no: mark_finished(task_no),
+            command=lambda task_no=task_no: mark_finished(task_no),
         )
         tsk_undone_btn = tk.Button(
             db_frame,
@@ -249,7 +252,7 @@ def show_db():
             bg="green",
             fg="black",
             borderwidth=0,
-            command=lambda task_no = task_no: mark_unfinished(task_no),
+            command=lambda task_no=task_no: mark_unfinished(task_no),
         )
 
         t_frame.place(x=20, y=placey)
@@ -257,7 +260,7 @@ def show_db():
         t_label.place(x=10, y=5)
         tdets_label.place(x=10, y=2)
         tsk_done_btn.place(x=775, y=placey)
-        tsk_undone_btn.place(x=775, y=placey+50)
+        tsk_undone_btn.place(x=775, y=placey + 50)
         placey += 120
 
 

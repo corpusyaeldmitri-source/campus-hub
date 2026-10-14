@@ -1,9 +1,15 @@
 #CampusHub
 
-CampusHub is a student productivity platform.
+app made with tkinter to track and manage school work
 
-Goals
+features so far:
+    dashboard
+    - view tasks
+    - mark tasks finished or unfinished
 
-Manage assignments
-Track tasks
-Organize courses
+    task adding
+    - add tasks
+    - add task details
+
+    JSON
+    - save tasks to json
