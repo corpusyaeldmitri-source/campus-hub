@@ -19,6 +19,7 @@ def dashboard():
     root.after(50)
     db_frame.place(x=140, y=52)
     db_taskstodo.place(x=130, y=10)
+    db_taskdets.place(x=530, y=10)
     root.after(1, show_db)
 
 
@@ -86,11 +87,13 @@ def save_task():
         tsk_invalid_label.place(x=400, y=500)
         tsk_frame.after(1000, tsk_invalid_label.place_forget)
     else:
+        task_complete = False
         task = {
             "Name": task_name,
             "Subject": task_subject,
             "Due": task_due,
             "Details": task_details,
+            "Finished": task_complete
         }
 
         tasks_list.append(task)
@@ -176,6 +179,14 @@ db_taskstodo = tk.Label(
     fg="black",
     background="white",
 )
+db_taskdets = tk.Label(
+    db_frame,
+    text="Task Details",
+    font=("Helvetica", "16"),
+    fg="black",
+    background="white",
+)
+
 db_notasks = tk.Label(
     db_frame,
     text="No tasks yet",
@@ -187,23 +198,36 @@ tasks_list = storage.storage_load()
 
 
 def show_db():
-    placex = 20
     placey = 50
     for task in tasks_list:
         t_frame = tk.Frame(
-            db_frame, bg="light grey", height="100", width="300", relief="groove", bd=7
+            db_frame, bg="light grey", height="115", width="300", relief="groove", bd=7
         )
-        t_labels = tk.Label(
+        tdets_frame = tk.Frame(
+            db_frame, bg="light grey", height="115", width="480", relief="groove", bd=7
+        )
+        task_status = "Complete" if task["Finished"] else "Not Complete"
+        t_label = tk.Label(
             t_frame,
-            text=f"Name: {task["Name"]}\nSubject: {task["Subject"]}\nDue date: {task["Due"]}",
+            text=f"Name: {task["Name"]}\nSubject: {task["Subject"]}\nDue date: {task["Due"]}\nStatus: {task_status}",
             font=("Helvetica", "18"),
             fg="black",
             bg="light grey",
             justify="left",
         )
-        t_frame.place(x=placex, y=placey)
-        t_labels.place(x=10, y=5)
-        placey += 110
+        tdets_label = tk.Label(
+            tdets_frame,
+            text=f"{task["Details"]}",
+            font=("Helvetica", "16"),
+            fg="black",
+            bg="light grey",
+            justify="left",
+        )
+        t_frame.place(x=20, y=placey)
+        tdets_frame.place(x=330, y=placey)
+        t_label.place(x=10, y=5)
+        tdets_label.place(x=10, y=2)
+        placey += 120
 
 
 # TASKS ----------------------------------------------------------------------------------------------------------------
