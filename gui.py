@@ -58,7 +58,9 @@ def delete_task(task_no):
     storage.storage_save(tasks_list)
     for widget in tsk_del_frame.winfo_children():
         widget.destroy()
-    root.after(1, show_remove_task)
+    for widget in db_frame.winfo_children():
+            widget.place_forget()
+    root.after(10, show_db)
 
 
 # TASK BUTTONS ----------------------------------------------------------------------------------------------------------------
