@@ -53,12 +53,20 @@ def mark_unfinished(task_no):
     storage.storage_save(tasks_list)
     root.after(1, show_db)
 
+def delete_task(task_no):
+    del tasks_list[task_no]
+    storage.storage_save(tasks_list)
+    for widget in tsk_del_frame.winfo_children():
+        widget.destroy()
+    root.after(1, show_remove_task)
+
 
 # TASK BUTTONS ----------------------------------------------------------------------------------------------------------------
 
 
 def show_add_task():
     hide_task()
+    root.after(10, )
     tsk_frame.after(50)
     tsk_name_add.place(x=35, y=48)
     tsk_sub_add.place(x=27, y=88)
@@ -72,6 +80,42 @@ def show_add_task():
 
     add_button_task.place(x=705, y=500)
     clear_button_task.place(x=605, y=500)
+
+def show_remove_task():
+    hide_task()
+    tsk_del_frame.place(x=10, y=50)
+    placey = 10
+    for task_no, task in enumerate(tasks_list):
+        t_frame = tk.Frame(
+            tsk_del_frame, bg="white", height="115", width="300", relief="groove", bd=7
+        )
+        task_status = "Complete" if task["Finished"] else "Not Complete"
+        t_label = tk.Label(
+            t_frame,
+            text=f"Name: {task["Name"]}\nSubject: {task["Subject"]}\nDue date: {task["Due"]}\nStatus: {task_status}",
+            font=("Helvetica", "18"),
+            fg="black",
+            bg="white",
+            justify="left",
+        )
+        t_del_btn = tk.Button(
+            tsk_del_frame,
+            text="X",
+            font=("Helvetica", "16"),
+            height=2,
+            width=1,
+            bg="green",
+            fg="black",
+            borderwidth=0,
+            command=lambda task_no=task_no: delete_task(task_no)
+        )            
+
+        t_frame.place(x=10, y=placey)
+        t_label.place(x=10, y=10)
+        t_del_btn.place(x=310, y=placey)
+
+        placey += 120
+        
 
 
 def clear_entry_task():
@@ -112,9 +156,6 @@ def save_task():
 
         tsk_frame.after(1000, clear_entry_task)
 
-
-def show_remove_task():
-    hide_task()
 
 
 hdr_border = tk.Frame(root, bg="black", height=36, width=176)
@@ -179,6 +220,7 @@ db_frame = tk.Frame(root, bg="white", height="575", width="835", relief="sunken"
 tsk_frame = tk.Frame(root, bg="white", height="575", width="835", relief="sunken", bd=7)
 prj_frame = tk.Frame(root, bg="white", height="575", width="835", relief="sunken", bd=7)
 ass_frame = tk.Frame(root, bg="white", height="575", width="835", relief="sunken", bd=7)
+tsk_del_frame = tk.Frame(tsk_frame, bg="light grey", height="505", width="800", relief="sunken", bd=7)
 
 # DASHBOARD ----------------------------------------------------------------------------------------------------------------
 db_taskstodo = tk.Label(
@@ -262,8 +304,7 @@ def show_db():
         tsk_done_btn.place(x=775, y=placey)
         tsk_undone_btn.place(x=775, y=placey + 50)
         placey += 120
-
-
+        
 # ADD TASKS ----------------------------------------------------------------------------------------------------------------
 tsk_add_btn = tk.Button(
     tsk_frame,
@@ -366,8 +407,6 @@ sub_entry_add = tk.Entry(tsk_frame, width=75, bg="white", borderwidth=1, fg="bla
 date_entry_add = tk.Entry(tsk_frame, width=75, bg="white", borderwidth=1, fg="black")
 det_entry_add = tk.Text(tsk_frame, width=96, bg="white", borderwidth=1, fg="black")
 
-# MARK TASKS ----------------------------------------------------------------------------------------------------------------
-
 
 # HIDE ----------------------------------------------------------------------------------------------------------------
 def hide_task():
@@ -383,6 +422,7 @@ def hide_task():
 
     clear_button_task.place_forget()
     add_button_task.place_forget()
+    tsk_del_frame.place_forget()
 
 
 def hide():
