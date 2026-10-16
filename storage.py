@@ -13,4 +13,3 @@ def storage_load():
             return tasks_list
     except FileNotFoundError:
         return []
-        
